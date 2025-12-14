@@ -15,9 +15,55 @@
 - Designing the entire flow from scratch.
 - Own design decisions and compromises.
 
-## "What next?" - roadmap
-- Adding support for new types of fire extinguishers.
-- Real-world testing with users.
+## Roadmap
+This project is developed in clearly defined stages, focusing on building a strong VR foundation first, followed by immersive features and finally production-ready architecture.
+### v0.1 – VR Project Setup
+**Goal:** Setup VR Project and develop an architectural plan for the project
+
+- VR SDK integration and project setup
+- Github Actions initial setup
+- Develop an architectural plan for the project
+
+➡️ View milestone: [v0.1 – VR Project Setup](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/1)
+
+---
+
+### v0.2 – Core VR Interaction
+**Goal:** Establish a stable and reliable base for the VR application.
+
+- Head tracking and camera system
+- Basic controller/input handling
+- Minimal interaction mechanics
+- Simple scene rendering
+- Add E2E solution testing
+
+➡️ View milestone: [v0.2 – Core VR Interaction](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
+
+---
+
+### v0.3 – Core Experience MVP
+**Goal:** Deliver a playable and engaging VR experience with advanced interactions.
+
+- Advanced VR interactions (physics, spatial UI)
+- Performance optimization and comfort improvements
+- Enhanced immersion (visuals, UX)
+- Feature prototyping and iteration
+
+➡️ View milestone: [v0.3 – Core Experience MVP](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/3)
+
+---
+
+### v0.4 - Immersive VR & Advanced Technologies
+**Goal:** Prepare the application for production-level usage
+
+- Feature completion and refinement
+- SQLite integration for local data persistence
+- Dockerization for consistent builds and environments
+- Build and deployment workflows
+
+➡️ View milestone: [v0.4 - Immersive VR & Advanced Technologies](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/4)
+
+---
 
 
 # Who am I? - personal section
