@@ -30,15 +30,15 @@ jobs:
       with:
         unityEmail: ${{ secrets.UNITY_EMAIL }}
         unityPassword: ${{ secrets.UNITY_PASSWORD }}
-        unityVersion: 2022.3.8f1   # replace with your Unity version
-        activateSerial: ""          # leave empty for Personal license
+        unityVersion: 6000.2.7f2   
+        activateSerial: ""          
 
     # Build Unity project
     - name: Build Unity Project for Android (Quest)
       uses: game-ci/unity-builder@v4
       with:
-        unityVersion: 2022.3.8f1       # Unity version
-        targetPlatform: Android         # build target
-        buildName: QuestBuild           # name of output
-        buildPath: build                # folder to store APK
+        unityVersion: 6000.2.7f2
+        targetPlatform: Android
+        buildName: QuestBuild
+        buildPath: build
 
