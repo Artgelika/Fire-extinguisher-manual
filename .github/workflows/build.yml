@@ -30,14 +30,14 @@ jobs:
       with:
         unityEmail: ${{ secrets.UNITY_EMAIL }}
         unityPassword: ${{ secrets.UNITY_PASSWORD }}
-        unityVersion: 6.2.0f2  
+        unityVersion: 6000.2
         activateSerial: ""          
 
     # Build Unity project
     - name: Build Unity Project for Android (Quest)
       uses: game-ci/unity-builder@v4
       with:
-        unityVersion: 6.2.0f2
+        unityVersion: 6000.2
         targetPlatform: Android
         buildName: QuestBuild
         buildPath: build
