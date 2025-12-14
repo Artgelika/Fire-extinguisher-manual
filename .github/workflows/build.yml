@@ -31,7 +31,8 @@ jobs:
         unityEmail: ${{ secrets.UNITY_EMAIL }}
         unityPassword: ${{ secrets.UNITY_PASSWORD }}
         unityVersion: 2022.3.17f1
-        activateSerial: ""          
+        activateSerial: "" 
+        image: unityci/editor:2022.3.17f1-linux-il2cpp
 
     # Build Unity project
     - name: Build Unity Project for Android (Quest)
@@ -41,4 +42,5 @@ jobs:
         targetPlatform: Android
         buildName: QuestBuild
         buildPath: build
+        image: unityci/editor:2022.3.17f1-linux-il2cpp
 
