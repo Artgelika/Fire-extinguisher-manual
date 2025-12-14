@@ -31,6 +31,7 @@ jobs:
         unityEmail: ${{ secrets.UNITY_EMAIL }}
         unityPassword: ${{ secrets.UNITY_PASSWORD }}
         unityVersion: 6000.2.7f2
+        activateSerial: ""
       with:
         targetPlatform: Android
         buildName: QuestBuild
