@@ -18,7 +18,7 @@
 ## Roadmap
 This project is developed in clearly defined stages, focusing on building a strong VR foundation first, followed by immersive features and finally production-ready architecture.
 ### v0.1 – VR Project Setup
-[![Status](https://img.shields.io/badge/status-In%20Progress-blue)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/1)
+[![Status](https://img.shields.io/badge/status-Completed-brightgreen)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/1)
 
 **Goal:** Setup VR Project and develop an architectural plan for the project
 
@@ -31,7 +31,7 @@ This project is developed in clearly defined stages, focusing on building a stro
 ---
 
 ### v0.2 – Core VR Interaction
-[![Status](https://img.shields.io/badge/status-Planned-lightgrey)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
+[![Status](https://img.shields.io/badge/status-In%20Progress-blue)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
 
 **Goal:** Establish a stable and reliable base for the VR application.
 
