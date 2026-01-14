@@ -20,7 +20,7 @@ public class RoomBuilder : MonoBehaviour
 
     void CreateWalls()
     {
-        float roomWidth = 20f;
+        float roomWidth = 10f;
         float roomHeight = 5f;
         float wallThickness = 0.2f;
         float halfWidth = roomWidth / 2f;
