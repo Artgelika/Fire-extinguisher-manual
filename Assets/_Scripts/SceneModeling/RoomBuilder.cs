@@ -7,7 +7,7 @@ public class RoomBuilder : MonoBehaviour
         CreateFloor();
         CreateWalls();
         CreateTable();
-        CreateCeiling();        
+        CreateCeiling();
     }
 
     void CreateFloor()
@@ -80,7 +80,7 @@ public class RoomBuilder : MonoBehaviour
             new(-1.4f, legHeight / 2f, 0.9f),
             new(1.4f, legHeight / 2f, 0.9f),
             new(-1.4f, legHeight / 2f, 1.7f),
-            new(1.4f, legHeight / 2f, 1.7f)
+            new(1.4f, legHeight / 2f, 1.7f),
         };
         foreach (Vector3 pos in legPositions)
         {
