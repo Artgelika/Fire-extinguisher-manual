@@ -6,6 +6,7 @@ public class RoomBuilder : MonoBehaviour
     {
         CreateFloor();
         CreateWalls();
+        CreateTable();
         CreateCeiling();
     }
 
@@ -62,6 +63,34 @@ public class RoomBuilder : MonoBehaviour
         wall.transform.SetParent(this.transform, true);
         wall.transform.position = position;
         wall.transform.localScale = scale;
+    }
+
+    void CreateTable()
+    {
+        GameObject tableTop = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        tableTop.name = "Table_Top";
+        tableTop.transform.position = new Vector3(0, 1f, 1.3f);
+        tableTop.transform.localScale = new Vector3(3f, 0.1f, 1f);
+        tableTop.GetComponent<MeshRenderer>().material.color = new Color(0.55f, 0.27f, 0.07f); // Brown color
+        tableTop.transform.SetParent(transform, true);
+        float legHeight = 1f;
+        float legThickness = 0.05f;
+        Vector3[] legPositions = new Vector3[]
+        {
+            new(-1.4f, legHeight / 2f, 0.9f),
+            new(1.4f, legHeight / 2f, 0.9f),
+            new(-1.4f, legHeight / 2f, 1.7f),
+            new(1.4f, legHeight / 2f, 1.7f),
+        };
+        foreach (Vector3 pos in legPositions)
+        {
+            GameObject leg = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            leg.name = "Table_Leg";
+            leg.transform.position = pos;
+            leg.transform.localScale = new Vector3(legThickness, legHeight, legThickness);
+            leg.GetComponent<MeshRenderer>().material.color = new Color(0.55f, 0.27f, 0.07f); // Brown color
+            leg.transform.SetParent(transform, true);
+        }
     }
 
     void CreateCeiling()
