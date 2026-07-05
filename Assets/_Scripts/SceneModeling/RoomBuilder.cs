@@ -17,6 +17,26 @@ public class RoomBuilder : MonoBehaviour
         floor.transform.position = Vector3.zero;
         floor.transform.localScale = new Vector3(1, 1, 1);
         floor.transform.SetParent(this.transform, true);
+
+        // Remove any existing collider (Plane primitives often come with a MeshCollider)
+        Collider existingCollider = floor.GetComponent<Collider>();
+        if (existingCollider != null)
+        {
+            Destroy(existingCollider);
+        }
+        GenerateBoxCollider(floor);
+    }
+
+    BoxCollider GenerateBoxCollider(GameObject gameObject)
+    {
+        BoxCollider box = gameObject.AddComponent<BoxCollider>();
+        Vector3 finalScale = transform.lossyScale;
+        float planeWidth = 10f * finalScale.x;
+        float planeDepth = 10f * finalScale.z;
+        float thickness = 0.1f;
+        box.size = new Vector3(planeWidth, thickness, planeDepth);
+        box.center = new Vector3(0f, -thickness / 2f, 0f);
+        return box;
     }
 
     void CreateWalls()
