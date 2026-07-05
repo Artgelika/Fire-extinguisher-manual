@@ -16,7 +16,7 @@ public class LeverPress : MonoBehaviour
 
     void OnGrab(SelectEnterEventArgs args)
     {
-        if(!extinguisher.pinRemoved)
+        if (!extinguisher.pinRemoved)
         {
             Debug.Log("Cannot press lever until the pin is removed!");
             return;
