@@ -4,19 +4,20 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class CotterPin : MonoBehaviour
 {
-    public FireExtinguisherController extinguisher;
+    public GameObject cotterPin;
     private XRGrabInteractable _grab;
+    private Rigidbody _rigidbody;
 
     void Start()
     {
         _grab = GetComponent<XRGrabInteractable>();
+        _rigidbody = GetComponent<Rigidbody>();
         _grab.selectExited.AddListener(OnPinPulled);
+        _rigidbody.isKinematic = true;
     }
 
     void OnPinPulled(SelectExitEventArgs args)
     {
-        extinguisher.RemovePin();
-        Destroy(gameObject);
-        // in the next iteration the cotter pin will trigger a main script with whole examination of the fire extinguisher
+        _rigidbody.isKinematic = false;
     }
 }
