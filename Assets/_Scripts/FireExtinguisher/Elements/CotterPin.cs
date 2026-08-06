@@ -2,16 +2,25 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
+[RequireComponent(typeof(XRGrabInteractable))]
+[RequireComponent(typeof(Rigidbody))]
 public class CotterPin : MonoBehaviour
 {
     public GameObject cotterPin;
     private XRGrabInteractable _grab;
     private Rigidbody _rigidbody;
 
+    public bool IsPulled { get; private set; }
+
     void Start()
     {
-        _grab = GetComponent<XRGrabInteractable>();
-        _rigidbody = GetComponent<Rigidbody>();
+        if (!TryGetComponent(out _grab) ||
+            !TryGetComponent(out _rigidbody))
+        {
+            Debug.LogError("Required components not found on CotterPin.");
+            enabled = false;
+            return;
+        }
         _grab.selectExited.AddListener(OnPinPulled);
         _rigidbody.isKinematic = true;
     }
@@ -19,5 +28,8 @@ public class CotterPin : MonoBehaviour
     void OnPinPulled(SelectExitEventArgs args)
     {
         _rigidbody.isKinematic = false;
+        IsPulled = true;
+
+        gameObject.SetActive(false); // Hide the pin after it's pulled
     }
 }
