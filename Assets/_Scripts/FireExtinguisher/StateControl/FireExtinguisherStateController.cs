@@ -1,14 +1,17 @@
-public class FireExtinguisherStateMachine
+public class FireExtinguisherStateController
 {
     private FireExtinguisherState currentState;
-    public FireExtinguisherStateMachine()
+
+    public FireExtinguisherStateController()
     {
         //currentState = new LockedState(this);
     }
+
     public bool TryPullPin()
     {
         return currentState == FireExtinguisherState.Locked;
     }
+
     public bool TryPressLever()
     {
         return currentState == FireExtinguisherState.Ready;

@@ -14,8 +14,7 @@ public class CotterPin : MonoBehaviour
 
     void Start()
     {
-        if (!TryGetComponent(out _grab) ||
-            !TryGetComponent(out _rigidbody))
+        if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
         {
             Debug.LogError("Required components not found on CotterPin.");
             enabled = false;
@@ -30,6 +29,7 @@ public class CotterPin : MonoBehaviour
         _rigidbody.isKinematic = false;
         IsPulled = true;
 
-        gameObject.SetActive(false); // Hide the pin after it's pulled
+        // TODO: when CotterPin hit the ground, it should be destroyed or hidden
+        //gameObject.SetActive(false); // Hide the pin after it's pulled
     }
 }
