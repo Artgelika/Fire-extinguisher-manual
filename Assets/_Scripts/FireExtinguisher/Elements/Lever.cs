@@ -12,8 +12,11 @@ public class Lever : MonoBehaviour
     private float _handStartAngle;
     private float _leverAngle;
 
-    [SerializeField] private float minAngle = 0f;
-    [SerializeField] private float maxAngle = 35f;
+    [SerializeField]
+    private float minAngle = 0f;
+
+    [SerializeField]
+    private float maxAngle = 35f;
 
     private Quaternion _initialRotation;
 
@@ -21,8 +24,7 @@ public class Lever : MonoBehaviour
 
     void Start()
     {
-        if (!TryGetComponent(out _grab) ||
-            !TryGetComponent(out _rigidbody))
+        if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
         {
             Debug.LogError("Required components not found on Lever.");
             enabled = false;
@@ -69,35 +71,21 @@ public class Lever : MonoBehaviour
 
         float currentHandAngle = GetHandAngle();
 
-        float deltaAngle =
-            Mathf.DeltaAngle(
-                _handStartAngle,
-                currentHandAngle
-            );
+        float deltaAngle = Mathf.DeltaAngle(_handStartAngle, currentHandAngle);
 
-        _leverAngle = Mathf.Clamp(
-            deltaAngle,
-            minAngle,
-            maxAngle
-        );
+        _leverAngle = Mathf.Clamp(deltaAngle, minAngle, maxAngle);
 
-        transform.localRotation =
-            _initialRotation *
-            Quaternion.Euler(0f, 0f, _leverAngle);
+        transform.localRotation = _initialRotation * Quaternion.Euler(0f, 0f, _leverAngle);
     }
 
     private float GetHandAngle()
     {
-        Vector3 direction =
-            _handTransform.position - transform.position;
+        Vector3 direction = _handTransform.position - transform.position;
 
         // Obrót wokół osi Z,
         // dlatego ignorujemy wysokość.
         direction.z = 0f;
 
-        return Mathf.Atan2(
-            direction.y,
-            direction.x
-        ) * Mathf.Rad2Deg;
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     }
 }

@@ -740,6 +740,63 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
+--- !u!1001 &268212176
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.296
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.82246
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.05612
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f445ee5e16345f948934656ba23af819, type: 3}
+      propertyPath: m_Name
+      value: hose
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f445ee5e16345f948934656ba23af819, type: 3}
 --- !u!1 &268453523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5206,6 +5263,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 390345377274703046, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder05
+      objectReference: {fileID: 0}
+    - target: {fileID: 526750347181824111, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder06
+      objectReference: {fileID: 0}
     - target: {fileID: 699709967249121027, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.958
@@ -5226,6 +5291,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 1792145555623334200, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder01
+      objectReference: {fileID: 0}
     - target: {fileID: 2382383396493527925, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Size.y
       value: 0.7047189
@@ -5237,6 +5306,18 @@ PrefabInstance:
     - target: {fileID: 2382383396493527925, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Center.y
       value: 0.147641
+      objectReference: {fileID: 0}
+    - target: {fileID: 3012124026751199495, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder02
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035976626117509918, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3352456915871421920, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder08
       objectReference: {fileID: 0}
     - target: {fileID: 3375493798110730779, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Size.x
@@ -5334,6 +5415,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4840881317079718267, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder09
+      objectReference: {fileID: 0}
     - target: {fileID: 5303350338173526514, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -5353,6 +5438,10 @@ PrefabInstance:
     - target: {fileID: 5518849309675016975, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526341912742955441, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5719508343117739390, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Size.x
@@ -5393,6 +5482,18 @@ PrefabInstance:
     - target: {fileID: 6146090719431540640, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Center.x
       value: -0.0008701596
+      objectReference: {fileID: 0}
+    - target: {fileID: 6313035960494135381, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6798623803809863295, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6919680303176167653, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: m_Name
+      value: Cylinder04
       objectReference: {fileID: 0}
     - target: {fileID: 6974671529547695966, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: m_Name
@@ -8780,3 +8881,4 @@ SceneRoots:
   - {fileID: 1934146507423660519}
   - {fileID: 2006338031}
   - {fileID: 3832243963273354717}
+  - {fileID: 268212176}
