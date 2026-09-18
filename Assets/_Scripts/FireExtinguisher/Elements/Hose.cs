@@ -5,10 +5,12 @@ public class Hose : MonoBehaviour
 {
     public Rigidbody[] hoseSegments;
     public Rigidbody hoseAnchor;
+
     private void Start()
     {
         SetupHose();
     }
+
     private Vector3[] GetListOfSegmentsVectors(PointType pointType)
     {
         Vector3[] points = new Vector3[hoseSegments.Length];
@@ -20,11 +22,9 @@ public class Hose : MonoBehaviour
         return points;
     }
 
-    private Vector3[] GetTopPoints()
-    =>  GetListOfSegmentsVectors(PointType.Top); 
+    private Vector3[] GetTopPoints() => GetListOfSegmentsVectors(PointType.Top);
 
-    private Vector3[] GetBottomPoints()
-    =>  GetListOfSegmentsVectors(PointType.Bottom);
+    private Vector3[] GetBottomPoints() => GetListOfSegmentsVectors(PointType.Bottom);
 
     private void SetupHose()
     {
@@ -77,31 +77,35 @@ public class Hose : MonoBehaviour
             }
             else
             {
-                joint.connectedAnchor = hoseSegments[i - 1].transform.InverseTransformPoint(bottomPoints[i - 1]);
+                joint.connectedAnchor = hoseSegments[i - 1]
+                    .transform.InverseTransformPoint(bottomPoints[i - 1]);
             }
 
             collider.direction = 1; // Y-axis
 
-
             if (i == hoseSegments.Length - 1)
             {
-                XRGrabInteractable grabInteractable = hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
+                XRGrabInteractable grabInteractable =
+                    hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
                 grabInteractable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
             }
         }
     }
-    
+
     private Vector3 GetPointInSegmentToConnect(CapsuleCollider hoseCollider, PointType pointType)
     {
         Vector3 centerOfCollider = hoseCollider.bounds.center;
         float radius = hoseCollider.radius;
-        float yCoordinateInSegment = (pointType == PointType.Top)? centerOfCollider.y + radius : centerOfCollider.y - radius;
+        float yCoordinateInSegment =
+            (pointType == PointType.Top)
+                ? centerOfCollider.y + radius
+                : centerOfCollider.y - radius;
         return new Vector3(centerOfCollider.x, yCoordinateInSegment, centerOfCollider.z);
     }
 
     enum PointType
     {
         Top,
-        Bottom
+        Bottom,
     }
 }
