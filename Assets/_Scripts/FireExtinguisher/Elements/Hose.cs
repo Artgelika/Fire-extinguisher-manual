@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
@@ -8,102 +9,129 @@ public class Hose : MonoBehaviour
 
     private void Start()
     {
-        // 1. Zwiększamy dokładność obliczeń fizyki dla całej sceny (zabezpieczenie przed jitterem)
-        Physics.defaultSolverIterations = 12;
-        Physics.defaultSolverVelocityIterations = 12;
-
         SetupHose();
     }
 
+    private Vector3[] GetListOfSegmentsVectors(PointType pointType)
+    {
+        Vector3[] points = new Vector3[hoseSegments.Length];
+        for (int i = 0; i < hoseSegments.Length; i++)
+        {
+            CapsuleCollider capsuleCollider = hoseSegments[i].GetComponent<CapsuleCollider>();
+            points[i] = GetPointInSegmentToConnect(capsuleCollider, pointType);
+        }
+        return points;
+    }
+
+    private Vector3 GetPointInSegmentToConnect(CapsuleCollider hoseCollider, PointType pointType)
+    {
+        Vector3 localPoint = hoseCollider.center;
+        float offset = hoseCollider.height / 2f;
+
+        //Debug.DrawRay(
+        //    hoseCollider.transform.position,
+        //    hoseCollider.transform.up * 0.1f,
+        //    Color.green,
+        //    10f
+        //);
+
+        //Debug.DrawRay(
+        //    hoseCollider.transform.position,
+        //    hoseCollider.transform.right * 0.1f,
+        //    Color.red,
+        //    10f
+        //);
+
+        //Debug.DrawRay(
+        //    hoseCollider.transform.position,
+        //    hoseCollider.transform.forward * 0.1f,
+        //    Color.blue,
+        //    10f
+        //);
+
+        return pointType == PointType.Top
+            ? hoseCollider.transform.TransformPoint(localPoint + new Vector3(0, offset, 0))
+            : hoseCollider.transform.TransformPoint(localPoint - new Vector3(0, offset, 0));
+
+        //Vector3 centerOfCollider = hoseCollider.bounds.center;
+        //float radius = hoseCollider.radius;
+        //float yCoordinateInSegment =
+        //    (pointType == PointType.Top)
+        //        ? centerOfCollider.y + radius
+        //        : centerOfCollider.y - radius;
+        //var vex = new Vector3(centerOfCollider.x, yCoordinateInSegment, centerOfCollider.z);
+        //return vex; // new Vector3(centerOfCollider.x, yCoordinateInSegment, centerOfCollider.z);
+    }
+
+    private Vector3[] GetTopPoints() => GetListOfSegmentsVectors(PointType.Top);
+
+    private Vector3[] GetBottomPoints() => GetListOfSegmentsVectors(PointType.Bottom);
+
     private void SetupHose()
     {
-        int count = hoseSegments.Length;
+        Vector3[] topPoints = GetTopPoints();
+        Vector3[] bottomPoints = GetBottomPoints();
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < hoseSegments.Length; i++)
         {
-            Rigidbody currentSegment = hoseSegments[i];
+            Debug.Log(
+                $"Segment {i}\n"
+                    + $"Position: {hoseSegments[i].position}\n"
+                    + $"TOP: {topPoints[i]}\n"
+                    + $"BOTTOM: {bottomPoints[i]}\n"
+                    + $"TOP-BOTTOM distance: {Vector3.Distance(topPoints[i], bottomPoints[i])}"
+            );
+            Rigidbody hoseSegment = hoseSegments[i];
+            ConfigurableJoint joint = hoseSegment.gameObject.AddComponent<ConfigurableJoint>();
+            CapsuleCollider collider = hoseSegment.gameObject.GetComponent<CapsuleCollider>();
 
-            // 1. Zmiana trybu detekcji kolizji na ciągły
-            currentSegment.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            currentSegment.interpolation = RigidbodyInterpolation.Interpolate;
+            joint.connectedBody = (i == 0) ? hoseAnchor : hoseSegments[i - 1];
+            joint.xMotion = ConfigurableJointMotion.Limited;
+            joint.yMotion = ConfigurableJointMotion.Limited;
+            joint.zMotion = ConfigurableJointMotion.Limited;
 
-            // Masa i tłumienie
-            currentSegment.mass = Mathf.Lerp(1.0f, 0.2f, (float)i / count);
-            currentSegment.linearDamping = 5f;  // Wysokie tłumienie liniowe
-            currentSegment.angularDamping = 15f; // Bardzo wysokie tłumienie kątowe
+            joint.angularXMotion = ConfigurableJointMotion.Limited;
+            joint.angularYMotion = ConfigurableJointMotion.Limited;
+            joint.angularZMotion = ConfigurableJointMotion.Limited;
 
-            if (!currentSegment.TryGetComponent<CapsuleCollider>(out var collider))
+            joint.linearLimitSpring = new SoftJointLimitSpring
             {
-                collider = currentSegment.gameObject.AddComponent<CapsuleCollider>();
-            }
+                spring = 100f, // Zmniejsz z 1000f na 50-100f
+                damper = 30f, // Zwiększ tłumienie, żeby wygasić drgania
+            };
 
-            collider.direction = 2; // Oś Z
-            float halfHeight = collider.height / 2f;
-
-            ConfigurableJoint joint = currentSegment.gameObject.AddComponent<ConfigurableJoint>();
             joint.enableCollision = false;
+            joint.projectionMode = JointProjectionMode.PositionAndRotation;
+            joint.projectionDistance = 0.02f; // 1 cm tolerancji przed wymuszeniem pozycji
+            //joint.projectionAngle = 6f;
 
-            // Anchor w punkcie styku
-            joint.anchor = new Vector3(0, 0, halfHeight);
+            joint.anchor = hoseSegment.transform.InverseTransformPoint(topPoints[i]);
+            joint.enablePreprocessing = true;
 
             if (i == 0)
             {
-                joint.connectedBody = hoseAnchor;
-                joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(
-                    currentSegment.transform.TransformPoint(joint.anchor)
-                );
-
-                if (hoseAnchor.TryGetComponent<Collider>(out var anchorCollider))
-                {
-                    Physics.IgnoreCollision(collider, anchorCollider);
-                }
+                joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(bottomPoints[i]);
             }
             else
             {
-                Rigidbody previousSegment = hoseSegments[i - 1];
-                joint.connectedBody = previousSegment;
-
-                var prevCollider = previousSegment.GetComponent<CapsuleCollider>();
-                float prevHalfHeight = prevCollider.height / 2f;
-
-                joint.connectedAnchor = new Vector3(0, 0, -prevHalfHeight);
-
-                Physics.IgnoreCollision(collider, prevCollider);
+                joint.connectedAnchor = hoseSegments[i - 1]
+                    .transform.InverseTransformPoint(bottomPoints[i - 1]);
             }
 
-            // Zablokuj pozycję
-            joint.xMotion = ConfigurableJointMotion.Locked;
-            joint.yMotion = ConfigurableJointMotion.Locked;
-            joint.zMotion = ConfigurableJointMotion.Locked;
+            collider.direction = 1; // Y-axis
 
-            // Uproszczone gięcie - Free z napędem sprężynowym (Drives) zamiast ciasnych limitów
-            // To całkowicie eliminuje drgania od PhysX!
-            joint.angularXMotion = ConfigurableJointMotion.Free;
-            joint.angularYMotion = ConfigurableJointMotion.Free;
-            joint.angularZMotion = ConfigurableJointMotion.Locked;
-
-            // Slinger/Dampener na obrót zamiast sztywnych limitów
-            JointDrive drive = new JointDrive
+            if (i == hoseSegments.Length - 1)
             {
-                positionSpring = 100f,
-                positionDamper = 20f,
-                maximumForce = float.MaxValue
-            };
-
-            joint.slerpDrive = drive;
-            joint.rotationDriveMode = RotationDriveMode.Slerp;
-
-            joint.projectionMode = JointProjectionMode.PositionAndRotation;
-            joint.projectionDistance = 0.01f;
-            joint.projectionAngle = 5f;
-
-            joint.enablePreprocessing = false;
-
-            if (i == count - 1)
-            {
-                var grabInteractable = currentSegment.gameObject.AddComponent<XRGrabInteractable>();
-                grabInteractable.movementType = XRBaseInteractable.MovementType.Instantaneous;
+                XRGrabInteractable grabInteractable =
+                    hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
+                grabInteractable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
             }
         }
+    }
+
+    enum PointType
+    {
+        Top,
+        Bottom,
     }
 }
