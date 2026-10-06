@@ -1,29 +1,54 @@
-public class FireExtinguisherStateController
+namespace Assets._Scripts.FireExtinguisher.StateControl
 {
-    private FireExtinguisherState currentState;
-
-    public FireExtinguisherStateController()
+    public class FireExtinguisherStateController
     {
-        //currentState = new LockedState(this);
-    }
+        private FireExtinguisherState currentState;
 
-    public bool TryPullPin()
-    {
-        return currentState == FireExtinguisherState.Locked;
-    }
+        public FireExtinguisherStateController()
+        {
+            currentState = FireExtinguisherState.Locked;
+        }
 
-    public bool TryPressLever()
-    {
-        return currentState == FireExtinguisherState.Ready;
-    }
+        public FireExtinguisherState CurrentState => currentState;
 
-    public bool TryReleaseLever()
-    {
-        return currentState == FireExtinguisherState.Discharging;
-    }
+        public bool TryPullPin()
+        {
+            if (currentState == FireExtinguisherState.Locked)
+            {
+                currentState = FireExtinguisherState.Ready;
+                return true;
+            }
+            return false;
+        }
 
-    public bool TryEmptyBottle()
-    {
-        return currentState == FireExtinguisherState.Empty;
+        public bool TryPressLever()
+        {
+            if (currentState == FireExtinguisherState.Ready)
+            {
+                currentState = FireExtinguisherState.Discharging;
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryReleaseLever()
+        {
+            if (currentState == FireExtinguisherState.Discharging)
+            {
+                currentState = FireExtinguisherState.Ready;
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryEmptyBottle()
+        {
+            if (currentState == FireExtinguisherState.Discharging)
+            {
+                currentState = FireExtinguisherState.Empty;
+                return true;
+            }
+            return false;
+        }
     }
 }

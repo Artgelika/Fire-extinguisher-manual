@@ -1,26 +1,34 @@
+using Assets._Scripts.FireExtinguisher.Behaviors.Interfaces;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class SprayNozzle : MonoBehaviour
+namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    //public FireExtinguisherController extinguisher;
-    private XRGrabInteractable _grab;
-
-    void Start()
+    [RequireComponent(typeof(ISprayBehavior))]
+    public class SprayNozzle : MonoBehaviour
     {
-        _grab = GetComponent<XRGrabInteractable>();
-        _grab.selectEntered.AddListener(OnGrab);
-        _grab.selectExited.AddListener(OnRelease);
-    }
+        //[SerializeField]
+        private Transform sprayPoint;
+        public Transform SprayPoint => sprayPoint;
+        private ISprayBehavior _sprayBehavior;
+        public ISprayBehavior SprayBehavior => _sprayBehavior;
 
-    void OnGrab(SelectEnterEventArgs args)
-    {
-        // Optional: Add any logic needed when the spray nozzle is grabbed
-    }
+        private void Awake()
+        {
+            _sprayBehavior = GetComponent<ISprayBehavior>();
 
-    void OnRelease(SelectExitEventArgs args)
-    {
-        // Optional: Add any logic needed when the spray nozzle is released
+            if (_sprayBehavior == null)
+            {
+                Debug.LogError("No ISprayBehavior found on SprayNozzle.", this);
+            }
+        }
+        public void SetupSprayNozzle(Rigidbody hoseSegment)
+        {
+            XRGrabInteractable grabInteractable =
+                        hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
+            grabInteractable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+        }
+
     }
 }

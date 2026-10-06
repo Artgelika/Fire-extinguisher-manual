@@ -1,5 +1,8 @@
-public interface ISprayBehavior
+namespace Assets._Scripts.FireExtinguisher.Behaviors.Interfaces
 {
-    public void Spray();
-    public void StopSpray();
+    public interface ISprayBehavior
+    {
+        public void StartSpray();
+        public void StopSpray();
+    }
 }

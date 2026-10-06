@@ -1,35 +1,38 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
-
-[RequireComponent(typeof(XRGrabInteractable))]
-[RequireComponent(typeof(Rigidbody))]
-public class CotterPin : MonoBehaviour
+namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    public GameObject cotterPin;
-    private XRGrabInteractable _grab;
-    private Rigidbody _rigidbody;
-
-    public bool IsPulled { get; private set; }
-
-    void Start()
+    [RequireComponent(typeof(XRGrabInteractable))]
+    [RequireComponent(typeof(Rigidbody))]
+    public class CotterPin : MonoBehaviour
     {
-        if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
+        public GameObject cotterPin;
+        private XRGrabInteractable _grab;
+        private Rigidbody _rigidbody;
+
+        public bool IsPulled { get; private set; }
+
+        void Start()
         {
-            Debug.LogError("Required components not found on CotterPin.");
-            enabled = false;
-            return;
+            if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
+            {
+                Debug.LogError("Required components not found on CotterPin.");
+                enabled = false;
+                return;
+            }
+            _grab.selectExited.AddListener(OnPinPulled);
+            _rigidbody.isKinematic = true;
         }
-        _grab.selectExited.AddListener(OnPinPulled);
-        _rigidbody.isKinematic = true;
-    }
 
-    void OnPinPulled(SelectExitEventArgs args)
-    {
-        _rigidbody.isKinematic = false;
-        IsPulled = true;
+        void OnPinPulled(SelectExitEventArgs args)
+        {
+            _rigidbody.isKinematic = false;
+            IsPulled = true;
 
-        // TODO: when CotterPin hit the ground, it should be destroyed or hidden
-        //gameObject.SetActive(false); // Hide the pin after it's pulled
+            // TODO: when CotterPin hit the ground, it should be destroyed or hidden
+            //gameObject.SetActive(false); // Hide the pin after it's pulled
+        }
     }
 }
+
