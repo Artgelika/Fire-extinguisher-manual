@@ -4,8 +4,5 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    public class Bottle : MonoBehaviour
-    {
-    }
+    public class Bottle : MonoBehaviour { }
 }
-

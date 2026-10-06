@@ -1,7 +1,7 @@
-using UnityEngine;
 using Assets._Scripts.FireExtinguisher.Behaviors.Interfaces;
 using Assets._Scripts.FireExtinguisher.Elements;
 using Assets._Scripts.FireExtinguisher.StateControl;
+using UnityEngine;
 
 public class FireExtinguisher : MonoBehaviour
 {

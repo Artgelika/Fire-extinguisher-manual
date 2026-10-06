@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+
 namespace Assets._Scripts.FireExtinguisher.Elements
 {
     public class Hose : MonoBehaviour
@@ -23,7 +24,10 @@ namespace Assets._Scripts.FireExtinguisher.Elements
             return points;
         }
 
-        private Vector3 GetPointInSegmentToConnect(CapsuleCollider hoseCollider, PointType pointType)
+        private Vector3 GetPointInSegmentToConnect(
+            CapsuleCollider hoseCollider,
+            PointType pointType
+        )
         {
             Vector3 localPoint = hoseCollider.center;
             float offset = hoseCollider.height / 2f;
@@ -33,7 +37,9 @@ namespace Assets._Scripts.FireExtinguisher.Elements
         }
 
         private Vector3[] GetTopPoints() => GetListOfSegmentsVectors(PointType.Top);
+
         private Vector3[] GetBottomPoints() => GetListOfSegmentsVectors(PointType.Bottom);
+
         private bool IsLastSegment(int index) => index == hoseSegments.Length - 1;
 
         public void SetupHose()
@@ -51,7 +57,6 @@ namespace Assets._Scripts.FireExtinguisher.Elements
                         + $"TOP-BOTTOM distance: {Vector3.Distance(topPoints[i], bottomPoints[i])}"
                 );
 
-
                 Rigidbody hoseSegment = hoseSegments[i];
                 CapsuleCollider collider = hoseSegment.gameObject.GetComponent<CapsuleCollider>();
 
@@ -66,11 +71,7 @@ namespace Assets._Scripts.FireExtinguisher.Elements
                 joint.angularYMotion = ConfigurableJointMotion.Limited;
                 joint.angularZMotion = ConfigurableJointMotion.Limited;
 
-                joint.linearLimitSpring = new SoftJointLimitSpring
-                {
-                    spring = 100f,
-                    damper = 30f,
-                };
+                joint.linearLimitSpring = new SoftJointLimitSpring { spring = 100f, damper = 30f };
 
                 joint.enableCollision = false;
                 joint.projectionMode = JointProjectionMode.PositionAndRotation;
@@ -81,7 +82,9 @@ namespace Assets._Scripts.FireExtinguisher.Elements
 
                 if (i == 0)
                 {
-                    joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(bottomPoints[i]);
+                    joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(
+                        bottomPoints[i]
+                    );
                 }
                 else
                 {

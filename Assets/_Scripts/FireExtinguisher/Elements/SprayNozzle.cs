@@ -23,12 +23,12 @@ namespace Assets._Scripts.FireExtinguisher.Elements
                 Debug.LogError("No ISprayBehavior found on SprayNozzle.", this);
             }
         }
+
         public void SetupSprayNozzle(Rigidbody hoseSegment)
         {
             XRGrabInteractable grabInteractable =
-                        hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
+                hoseSegment.gameObject.AddComponent<XRGrabInteractable>();
             grabInteractable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
         }
-
     }
 }

@@ -15,10 +15,7 @@ namespace Assets._Scripts.FireExtinguisher.Behaviors
 
         public void StopSpray()
         {
-            _particleSystem.Stop(
-                true,
-                ParticleSystemStopBehavior.StopEmitting
-            );
+            _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 }
