@@ -1,3 +1,4 @@
+using Assets._Scripts.FireExtinguisher.Behaviors;
 using Assets._Scripts.FireExtinguisher.Behaviors.Interfaces;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;

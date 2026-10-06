@@ -5,64 +5,111 @@ using UnityEngine;
 
 public class FireExtinguisher : MonoBehaviour
 {
-    public GameObject fireExtinguisherGameObject;
+    [SerializeField]
     private Lever _lever;
+    [SerializeField]
     private CotterPin _cotterPin;
     private Bottle _bottle;
+    [SerializeField]
     private Hose _hose;
+    [SerializeField]
     private SprayNozzle _sprayNozzle;
     private FireExtinguisherStateController _fireExtinguisherStateController;
     private ISprayBehavior _sprayBehavior;
 
-    public FireExtinguisher(
-        CotterPin cotterPin,
-        Lever lever,
-        Bottle bottle,
-        Hose hose,
-        SprayNozzle sprayNozzle
-    )
-    {
-        this._cotterPin = cotterPin;
-        this._lever = lever;
-        this._bottle = bottle;
-        this._hose = hose;
-        this._sprayNozzle = sprayNozzle;
-    }
 
     // pin jest wyciągnięty
 
     public bool IsPinPulled => _cotterPin != null && _cotterPin.IsPulled;
-
-    // dzwignia jest wciśnięta
-
-    // Spray nozzle jest chwycony
-
-    // butla jest pusta
-
-    // butla jest pełna
-
-    // butla jest w trakcie opróżniania
-
-    public void Initialize() { }
-
-    public void StartDischarge()
+    public bool IsLeverPressed => _lever != null && _lever.IsPressed;
+    private void Awake()
     {
-        // Implementation for starting discharge
+        _fireExtinguisherStateController = new FireExtinguisherStateController();
+        if (_sprayNozzle != null)
+        {
+            _sprayBehavior = _sprayNozzle.GetComponent<ISprayBehavior>();
+        }
+        if (_sprayBehavior == null)
+        {
+            Debug.LogError("No ISprayBehavior found on FireExtinguisher.", this);
+            enabled = false;
+        }
     }
 
-    public void StopDischarge()
+    private void OnEnable()
     {
-        // Implementation for stopping discharge
+        if (_cotterPin != null)
+        {
+            HandlePinPulled();
+            _cotterPin.OnPinPulled += HandlePinPulled;
+            //_cotterPin.OnPulled += HandlePinPulled;
+        }
+        if (_lever != null)
+        {
+            _lever.OnPressed += HandleLeverPressed;
+            _lever.OnReleased += HandleLeverReleased;
+        }
     }
 
-    public void Reset() { }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnDisable()
     {
-        //CotterPin();
+        //if (_cotterPin != null)
+        //{
+        //    HandlePinPulled();
+        //    //_cotterPin.OnPulled -= HandlePinPulled;
+        //}
+        if (_lever != null)
+        {
+            _lever.OnPressed -= HandleLeverPressed;
+            _lever.OnReleased -= HandleLeverReleased;
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     }
 
-    // Update is called once per frame
-    void Update() { }
+    private void HandlePinPulled()
+    {
+        if (IsPinPulled)
+        {
+            _fireExtinguisherStateController.TryPullPin();
+        }
+    }
+
+    private void HandleLeverPressed()
+    {
+        if (_fireExtinguisherStateController.TryPressLever())
+        {
+            _sprayNozzle.SprayBehavior.StartSpray();
+            //_sprayBehavior.StartSpray();
+        }
+    }
+
+    private void HandleLeverReleased()
+    {
+        if (_fireExtinguisherStateController.TryReleaseLever())
+        {
+            _sprayNozzle.SprayBehavior.StopSpray();
+            //_sprayBehavior.StopSpray();
+        }
+    }
 }
