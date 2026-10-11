@@ -1,8 +1,26 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    public class Bottle : MonoBehaviour { }
+    public class Bottle : MonoBehaviour 
+    {
+        [SerializeField]
+        private float _capacity = 50;
+        private float _currentAmount;
+        public bool IsEmpty => _currentAmount <= 0f;
+        
+        private void Awake()
+        {
+            _currentAmount = _capacity;
+        }
+
+        public void FuelConsumption(float amount)
+        {
+            _currentAmount = Mathf.Max(0, _currentAmount - amount);
+            if (_currentAmount <= 0)
+            {
+                Debug.Log("Bottle is empty.");
+            }
+        }
+    }
 }

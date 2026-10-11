@@ -2448,7 +2448,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 1000
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -6674,6 +6674,11 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 1684614121296971633, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
   m_PrefabInstance: {fileID: 3832243963273354717}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &942115878 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3378675764852457841, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+  m_PrefabInstance: {fileID: 3832243963273354717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!54 &1006814795 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 2543413291955109968, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
@@ -8583,6 +8588,18 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 7704521919772658592, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
   m_PrefabInstance: {fileID: 3832243963273354717}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1857084121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942115878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac58aae2a1b91e4ea6dc6758f274f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Scripts.FireExtinguisher.Elements.Bottle
 --- !u!1 &1956417144
 GameObject:
   m_ObjectHideFlags: 0
@@ -10051,7 +10068,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720c511fe57e12d4fa8c9a3f6ff66663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  cotterPin: {fileID: 0}
 --- !u!138 &3780674078646956400
 FixedJoint:
   m_ObjectHideFlags: 0
@@ -10270,6 +10286,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1020613410}
     - target: {fileID: 5453254491644073071, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      propertyPath: _bottle
+      value: 
+      objectReference: {fileID: 1857084121}
+    - target: {fileID: 5453254491644073071, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       propertyPath: _cotterPin
       value: 
       objectReference: {fileID: 637355341}
@@ -10400,6 +10420,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7339077574274779204, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1329219713}
+    - targetCorrespondingSourceObject: {fileID: 3378675764852457841, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1857084121}
   m_SourcePrefab: {fileID: 100100000, guid: 75d5ea8ab2cc67a49bed7dc96c81cf4d, type: 3}
 --- !u!23 &3903450360373354236
 MeshRenderer:

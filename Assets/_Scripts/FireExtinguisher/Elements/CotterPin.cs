@@ -1,4 +1,3 @@
-using Mono.Cecil;
 using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -10,7 +9,6 @@ namespace Assets._Scripts.FireExtinguisher.Elements
     [RequireComponent(typeof(Rigidbody))]
     public class CotterPin : MonoBehaviour
     {
-        public GameObject cotterPin;
         private XRGrabInteractable _grab;
         private Rigidbody _rigidbody;
         public event Action OnPinPulled;
@@ -33,9 +31,6 @@ namespace Assets._Scripts.FireExtinguisher.Elements
             _rigidbody.isKinematic = false;
             IsPulled = true;
             OnPinPulled?.Invoke();
-
-            // TODO: when CotterPin hit the ground, it should be destroyed or hidden
-            //gameObject.SetActive(false); // Hide the pin after it's pulled
         }
     }
 }

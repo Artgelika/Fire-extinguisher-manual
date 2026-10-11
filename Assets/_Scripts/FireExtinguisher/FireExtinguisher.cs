@@ -7,21 +7,29 @@ public class FireExtinguisher : MonoBehaviour
 {
     [SerializeField]
     private Lever _lever;
+
     [SerializeField]
     private CotterPin _cotterPin;
+
+    [SerializeField]
     private Bottle _bottle;
+
     [SerializeField]
     private Hose _hose;
+
     [SerializeField]
     private SprayNozzle _sprayNozzle;
+
+    [SerializeField]
+    private float _consumptionRate = 1f; // Amount of liquid consumed per second
+
     private FireExtinguisherStateController _fireExtinguisherStateController;
     private ISprayBehavior _sprayBehavior;
 
-
-    // pin jest wyciągnięty
-
     public bool IsPinPulled => _cotterPin != null && _cotterPin.IsPulled;
     public bool IsLeverPressed => _lever != null && _lever.IsPressed;
+    public bool IsBottleEmpty => _bottle != null && _bottle.IsEmpty;
+
     private void Awake()
     {
         _fireExtinguisherStateController = new FireExtinguisherStateController();
@@ -36,13 +44,24 @@ public class FireExtinguisher : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_fireExtinguisherStateController.CurrentState == FireExtinguisherState.Discharging)
+        {
+            _bottle.FuelConsumption(_consumptionRate * Time.deltaTime);
+            if (_bottle.IsEmpty)
+            {
+                HandleEmptyBottle();
+            }
+        }
+    }
+
     private void OnEnable()
     {
         if (_cotterPin != null)
         {
             HandlePinPulled();
             _cotterPin.OnPinPulled += HandlePinPulled;
-            //_cotterPin.OnPulled += HandlePinPulled;
         }
         if (_lever != null)
         {
@@ -53,38 +72,15 @@ public class FireExtinguisher : MonoBehaviour
 
     private void OnDisable()
     {
-        //if (_cotterPin != null)
-        //{
-        //    HandlePinPulled();
-        //    //_cotterPin.OnPulled -= HandlePinPulled;
-        //}
+        if (_cotterPin != null)
+        {
+            _cotterPin.OnPinPulled -= HandlePinPulled;
+        }
         if (_lever != null)
         {
             _lever.OnPressed -= HandleLeverPressed;
             _lever.OnReleased -= HandleLeverReleased;
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     }
 
     private void HandlePinPulled()
@@ -100,7 +96,6 @@ public class FireExtinguisher : MonoBehaviour
         if (_fireExtinguisherStateController.TryPressLever())
         {
             _sprayNozzle.SprayBehavior.StartSpray();
-            //_sprayBehavior.StartSpray();
         }
     }
 
@@ -109,7 +104,12 @@ public class FireExtinguisher : MonoBehaviour
         if (_fireExtinguisherStateController.TryReleaseLever())
         {
             _sprayNozzle.SprayBehavior.StopSpray();
-            //_sprayBehavior.StopSpray();
         }
+    }
+
+    private void HandleEmptyBottle()
+    {
+        _fireExtinguisherStateController.TryEmptyBottle();
+        _sprayNozzle.SprayBehavior.StopSpray();
     }
 }
