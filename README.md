@@ -43,7 +43,6 @@ This project is developed in clearly defined stages, focusing on building a stro
 - Basic controller/input handling
 - Minimal interaction mechanics
 - Simple scene rendering
-- Add E2E solution testing
 
 ➡️ View milestone: [v0.2 – Core VR Interaction](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
 
