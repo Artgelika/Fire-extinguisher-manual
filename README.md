@@ -5,6 +5,8 @@
 - Private project developed independently by me.
 
 ## Demo
+<img width="480" height="405" alt="output" src="https://github.com/user-attachments/assets/ee397bfb-f5fb-49b1-b639-2c1d00b23e0c" />
+
 
 ## Technologies
 - Unity 3D
