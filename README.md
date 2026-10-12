@@ -35,7 +35,7 @@ This project is developed in clearly defined stages, focusing on building a stro
 ---
 
 ### v0.2 – Core VR Interaction
-[![Status]([https://img.shields.io/badge/status-In%20Progress-blue](https://img.shields.io/badge/status-Completed-brightgreen))](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
+[![Status](https://img.shields.io/badge/status-Completed-brightgreen)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
 
 **Goal:** Establish a stable and reliable base for the VR application.
 
