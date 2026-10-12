@@ -5,7 +5,7 @@
 - Private project developed independently by me.
 
 ## Demo
-<img width="480" height="405" alt="output" src="https://github.com/user-attachments/assets/ee397bfb-f5fb-49b1-b639-2c1d00b23e0c" />
+<img width="480" height="473" alt="gasnica" src="https://github.com/user-attachments/assets/1d8c0e47-ba5a-47e0-8fd8-2eb9db956cf7" />
 
 
 ## Technologies
@@ -14,8 +14,10 @@
 - Github Actions
 
 ## Why is this valuable to the employer
-- Designing the entire flow from scratch.
+- Designing the system architecture and interaction flow from scratch.
 - Own design decisions and compromises.
+- Using state machines to manage complex interaction logic and control valid state transitions.
+- Designing component-based architecture with clearly separated responsibilities.
 
 ## Roadmap
 This project is developed in clearly defined stages, focusing on building a strong VR foundation first, followed by immersive features and finally production-ready architecture.
