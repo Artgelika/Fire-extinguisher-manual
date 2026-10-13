@@ -1,7 +1,5 @@
-using Assets._Scripts.FireExtinguisher.Behaviors;
 using Assets._Scripts.FireExtinguisher.Behaviors.Interfaces;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets._Scripts.FireExtinguisher.Elements
@@ -9,8 +7,7 @@ namespace Assets._Scripts.FireExtinguisher.Elements
     [RequireComponent(typeof(ISprayBehavior))]
     public class SprayNozzle : MonoBehaviour
     {
-        //[SerializeField]
-        private Transform sprayPoint;
+        private readonly Transform sprayPoint;
         public Transform SprayPoint => sprayPoint;
         private ISprayBehavior _sprayBehavior;
         public ISprayBehavior SprayBehavior => _sprayBehavior;

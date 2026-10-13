@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace Assets._Scripts.FireExtinguisher.Elements
 {
@@ -47,49 +46,42 @@ namespace Assets._Scripts.FireExtinguisher.Elements
             Vector3[] topPoints = GetTopPoints();
             Vector3[] bottomPoints = GetBottomPoints();
 
-            for (int i = 0; i < hoseSegments.Length; i++)
+            if (hoseSegments == null || topPoints == null || bottomPoints == null)
+                return;
+
+            int count = hoseSegments.Length;
+            if (topPoints.Length < count) count = topPoints.Length;
+            if (bottomPoints.Length < count) count = bottomPoints.Length;
+
+            for (int i = 0; i < count; i++)
             {
+                Rigidbody hoseSegment = hoseSegments[i];
+                Vector3 top = topPoints[i];
+                Vector3 bottom = bottomPoints[i];
+
                 Debug.Log(
                     $"Segment {i}\n"
-                        + $"Position: {hoseSegments[i].position}\n"
-                        + $"TOP: {topPoints[i]}\n"
-                        + $"BOTTOM: {bottomPoints[i]}\n"
-                        + $"TOP-BOTTOM distance: {Vector3.Distance(topPoints[i], bottomPoints[i])}"
+                        + $"Position: {hoseSegment.position}\n"
+                        + $"TOP: {top}\n"
+                        + $"BOTTOM: {bottom}\n"
+                        + $"TOP-BOTTOM distance: {Vector3.Distance(top, bottom)}"
                 );
 
-                Rigidbody hoseSegment = hoseSegments[i];
                 CapsuleCollider collider = hoseSegment.gameObject.GetComponent<CapsuleCollider>();
-
-                ConfigurableJoint joint = hoseSegment.gameObject.AddComponent<ConfigurableJoint>();
+                ConfigurableJoint joint = CreateConfiguredJoint(hoseSegment.gameObject);
 
                 joint.connectedBody = (i == 0) ? hoseAnchor : hoseSegments[i - 1];
-                joint.xMotion = ConfigurableJointMotion.Limited;
-                joint.yMotion = ConfigurableJointMotion.Limited;
-                joint.zMotion = ConfigurableJointMotion.Limited;
 
-                joint.angularXMotion = ConfigurableJointMotion.Limited;
-                joint.angularYMotion = ConfigurableJointMotion.Limited;
-                joint.angularZMotion = ConfigurableJointMotion.Limited;
-
-                joint.linearLimitSpring = new SoftJointLimitSpring { spring = 100f, damper = 30f };
-
-                joint.enableCollision = false;
-                joint.projectionMode = JointProjectionMode.PositionAndRotation;
-                joint.projectionDistance = 0.02f;
-
-                joint.anchor = hoseSegment.transform.InverseTransformPoint(topPoints[i]);
-                joint.enablePreprocessing = true;
-
+                joint.anchor = hoseSegment.transform.InverseTransformPoint(top);
                 if (i == 0)
                 {
-                    joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(
-                        bottomPoints[i]
-                    );
+                    joint.connectedAnchor = hoseAnchor.transform.InverseTransformPoint(bottom);
                 }
                 else
                 {
-                    joint.connectedAnchor = hoseSegments[i - 1]
-                        .transform.InverseTransformPoint(bottomPoints[i - 1]);
+                    joint.connectedAnchor = hoseSegments[i - 1].transform.InverseTransformPoint(
+                        bottomPoints[i - 1]
+                    );
                 }
 
                 collider.direction = 1; // Y-axis
@@ -100,6 +92,28 @@ namespace Assets._Scripts.FireExtinguisher.Elements
                     sprayNozzle.SetupSprayNozzle(hoseSegment);
                 }
             }
+        }
+
+        private ConfigurableJoint CreateConfiguredJoint(GameObject go)
+        {
+            var joint = go.AddComponent<ConfigurableJoint>();
+
+            joint.xMotion = ConfigurableJointMotion.Limited;
+            joint.yMotion = ConfigurableJointMotion.Limited;
+            joint.zMotion = ConfigurableJointMotion.Limited;
+
+            joint.angularXMotion = ConfigurableJointMotion.Limited;
+            joint.angularYMotion = ConfigurableJointMotion.Limited;
+            joint.angularZMotion = ConfigurableJointMotion.Limited;
+
+            joint.linearLimitSpring = new SoftJointLimitSpring { spring = 100f, damper = 30f };
+
+            joint.enableCollision = false;
+            joint.projectionMode = JointProjectionMode.PositionAndRotation;
+            joint.projectionDistance = 0.02f;
+            joint.enablePreprocessing = true;
+
+            return joint;
         }
 
         enum PointType

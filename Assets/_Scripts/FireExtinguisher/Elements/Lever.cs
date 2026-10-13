@@ -7,64 +7,70 @@ namespace Assets._Scripts.FireExtinguisher.Elements
 {
     public class Lever : MonoBehaviour
     {
-        private XRGrabInteractable _grab;
+        [SerializeField] private float minAngle = 0f;
+        [SerializeField] private float maxAngle = 35f;
+        [SerializeField, Range(0f, 90f)] private float pressThresholdAngle = 30f;
+
+        private XRGrabInteractable _grabInteractable;
         private Rigidbody _rigidbody;
         private Transform _handTransform;
         private float _handStartAngle;
-        private float _leverAngle;
-
-        [SerializeField]
-        private float minAngle = 0f;
-
-        [SerializeField]
-        private float maxAngle = 35f;
-
         private Quaternion _initialRotation;
+        private float _leverAngle;
 
         public bool IsPressed { get; private set; }
         public event Action OnPressed;
         public event Action OnReleased;
 
-        void Start()
+        public float LeverAngle => _leverAngle;
+
+        private void Awake()
         {
-            if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
+            if (!TryGetComponent(out _grabInteractable) || !TryGetComponent(out _rigidbody))
             {
-                Debug.LogError("Required components not found on Lever.");
+                Debug.LogError("[Lever] Required components not found. Disabling component.");
                 enabled = false;
                 return;
             }
 
-            _grab.selectEntered.AddListener(OnGrab);
-            _grab.selectExited.AddListener(OnRelease);
-
             _rigidbody.isKinematic = true;
-
             _initialRotation = transform.localRotation;
         }
 
-        void OnDestroy()
+        private void OnEnable()
         {
-            if (_grab != null)
+            if (_grabInteractable != null)
             {
-                _grab.selectEntered.RemoveListener(OnGrab);
-                _grab.selectExited.RemoveListener(OnRelease);
+                _grabInteractable.selectEntered.AddListener(HandleSelectEntered);
+                _grabInteractable.selectExited.AddListener(HandleSelectExited);
             }
         }
 
-        void OnGrab(SelectEnterEventArgs args)
+        private void OnDisable()
         {
-            _handTransform = args.interactorObject.transform;
-            _handStartAngle = GetHandAngle();
-            Debug.Log("Lever caught");
+            if (_grabInteractable != null)
+            {
+                _grabInteractable.selectEntered.RemoveListener(HandleSelectEntered);
+                _grabInteractable.selectExited.RemoveListener(HandleSelectExited);
+            }
         }
 
-        void OnRelease(SelectExitEventArgs args)
+        private void HandleSelectEntered(SelectEnterEventArgs args)
+        {
+            _handTransform = args.interactorObject?.transform;
+            if (_handTransform != null)
+                _handStartAngle = GetHandAngle();
+        }
+
+        private void HandleSelectExited(SelectExitEventArgs args)
         {
             _handTransform = null;
-            Debug.Log("Lever released");
+            transform.localRotation = _initialRotation;
+            _leverAngle = 0f;
+            UpdatePressState(false);
         }
 
-        void Update()
+        private void Update()
         {
             if (_handTransform == null)
                 return;
@@ -72,25 +78,23 @@ namespace Assets._Scripts.FireExtinguisher.Elements
             float currentHandAngle = GetHandAngle();
             float deltaAngle = Mathf.DeltaAngle(_handStartAngle, currentHandAngle);
             _leverAngle = Mathf.Clamp(deltaAngle, minAngle, maxAngle);
-            Debug.Log("Lever angle: " + _leverAngle);
+
             transform.localRotation = _initialRotation * Quaternion.Euler(0f, 0f, _leverAngle);
-            Debug.Log("transform.localRotation: " + transform.localRotation);
-            bool pressedNow = _leverAngle >= 30f;
-            LeverPressStatus(pressedNow);
+
+            bool pressedNow = _leverAngle >= pressThresholdAngle;
+            UpdatePressState(pressedNow);
         }
 
-        private void LeverPressStatus(bool pressedNow)
+        private void UpdatePressState(bool pressedNow)
         {
             if (pressedNow && !IsPressed)
             {
                 IsPressed = true;
-                Debug.Log("LeverPressStatus: Lever pressed");
                 OnPressed?.Invoke();
             }
             else if (!pressedNow && IsPressed)
             {
                 IsPressed = false;
-                Debug.Log("LeverPressStatus: Lever released");
                 OnReleased?.Invoke();
             }
         }
@@ -98,7 +102,6 @@ namespace Assets._Scripts.FireExtinguisher.Elements
         private float GetHandAngle()
         {
             Vector3 direction = _handTransform.position - transform.position;
-            // rotation about the Z-axis
             direction.z = 0f;
             return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         }
