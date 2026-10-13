@@ -1,65 +1,115 @@
+using Assets._Scripts.FireExtinguisher.Behaviors.Interfaces;
+using Assets._Scripts.FireExtinguisher.Elements;
+using Assets._Scripts.FireExtinguisher.StateControl;
 using UnityEngine;
 
 public class FireExtinguisher : MonoBehaviour
 {
-    public GameObject fireExtinguisherGameObject;
+    [SerializeField]
     private Lever _lever;
+
+    [SerializeField]
     private CotterPin _cotterPin;
+
+    [SerializeField]
     private Bottle _bottle;
+
+    [SerializeField]
     private Hose _hose;
+
+    [SerializeField]
     private SprayNozzle _sprayNozzle;
+
+    [SerializeField]
+    private float _consumptionRate = 1f; // Amount of liquid consumed per second
+
     private FireExtinguisherStateController _fireExtinguisherStateController;
     private ISprayBehavior _sprayBehavior;
 
-    public FireExtinguisher(
-        CotterPin cotterPin,
-        Lever lever,
-        Bottle bottle,
-        Hose hose,
-        SprayNozzle sprayNozzle
-    )
-    {
-        this._cotterPin = cotterPin;
-        this._lever = lever;
-        this._bottle = bottle;
-        this._hose = hose;
-        this._sprayNozzle = sprayNozzle;
-    }
-
-    // pin jest wyciągnięty
-
     public bool IsPinPulled => _cotterPin != null && _cotterPin.IsPulled;
+    public bool IsLeverPressed => _lever != null && _lever.IsPressed;
+    public bool IsBottleEmpty => _bottle != null && _bottle.IsEmpty;
 
-    // dzwignia jest wciśnięta
-
-    // Spray nozzle jest chwycony
-
-    // butla jest pusta
-
-    // butla jest pełna
-
-    // butla jest w trakcie opróżniania
-
-    public void Initialize() { }
-
-    public void StartDischarge()
+    private void Awake()
     {
-        // Implementation for starting discharge
+        _fireExtinguisherStateController = new FireExtinguisherStateController();
+        if (_sprayNozzle != null)
+        {
+            _sprayBehavior = _sprayNozzle.GetComponent<ISprayBehavior>();
+        }
+        if (_sprayBehavior == null)
+        {
+            Debug.LogError("No ISprayBehavior found on FireExtinguisher.", this);
+            enabled = false;
+        }
     }
 
-    public void StopDischarge()
+    private void Update()
     {
-        // Implementation for stopping discharge
+        if (_fireExtinguisherStateController.CurrentState == FireExtinguisherState.Discharging)
+        {
+            _bottle.FuelConsumption(_consumptionRate * Time.deltaTime);
+            if (_bottle.IsEmpty)
+            {
+                HandleEmptyBottle();
+            }
+        }
     }
 
-    public void Reset() { }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        //CotterPin();
+        if (_cotterPin != null)
+        {
+            HandlePinPulled();
+            _cotterPin.OnPinPulled += HandlePinPulled;
+        }
+        if (_lever != null)
+        {
+            _lever.OnPressed += HandleLeverPressed;
+            _lever.OnReleased += HandleLeverReleased;
+        }
     }
 
-    // Update is called once per frame
-    void Update() { }
+    private void OnDisable()
+    {
+        if (_cotterPin != null)
+        {
+            _cotterPin.OnPinPulled -= HandlePinPulled;
+        }
+        if (_lever != null)
+        {
+            _lever.OnPressed -= HandleLeverPressed;
+            _lever.OnReleased -= HandleLeverReleased;
+        }
+    }
+
+    private void HandlePinPulled()
+    {
+        if (IsPinPulled)
+        {
+            _fireExtinguisherStateController.TryPullPin();
+        }
+    }
+
+    private void HandleLeverPressed()
+    {
+        if (_fireExtinguisherStateController.TryPressLever())
+        {
+            _sprayNozzle.SprayBehavior.StartSpray();
+        }
+    }
+
+    private void HandleLeverReleased()
+    {
+        if (_fireExtinguisherStateController.TryReleaseLever())
+        {
+            _sprayNozzle.SprayBehavior.StopSpray();
+        }
+    }
+
+    private void HandleEmptyBottle()
+    {
+        _fireExtinguisherStateController.TryEmptyBottle();
+        _sprayNozzle.SprayBehavior.StopSpray();
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class FireExtinguiserBuilderTests : InputTestFixture
+public class FireExtinguisherBuilderTests : InputTestFixture
 {
     public override void Setup()
     {

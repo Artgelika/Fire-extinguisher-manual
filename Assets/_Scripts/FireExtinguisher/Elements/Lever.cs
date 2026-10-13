@@ -1,91 +1,106 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class Lever : MonoBehaviour
+namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    private XRGrabInteractable _grab;
-    private Rigidbody _rigidbody;
-
-    private Transform _handTransform;
-
-    private float _handStartAngle;
-    private float _leverAngle;
-
-    [SerializeField]
-    private float minAngle = 0f;
-
-    [SerializeField]
-    private float maxAngle = 35f;
-
-    private Quaternion _initialRotation;
-
-    public bool IsPressed { get; private set; }
-
-    void Start()
+    public class Lever : MonoBehaviour
     {
-        if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
+        private XRGrabInteractable _grab;
+        private Rigidbody _rigidbody;
+        private Transform _handTransform;
+        private float _handStartAngle;
+        private float _leverAngle;
+
+        [SerializeField]
+        private float minAngle = 0f;
+
+        [SerializeField]
+        private float maxAngle = 35f;
+
+        private Quaternion _initialRotation;
+
+        public bool IsPressed { get; private set; }
+        public event Action OnPressed;
+        public event Action OnReleased;
+
+        void Start()
         {
-            Debug.LogError("Required components not found on Lever.");
-            enabled = false;
-            return;
+            if (!TryGetComponent(out _grab) || !TryGetComponent(out _rigidbody))
+            {
+                Debug.LogError("Required components not found on Lever.");
+                enabled = false;
+                return;
+            }
+
+            _grab.selectEntered.AddListener(OnGrab);
+            _grab.selectExited.AddListener(OnRelease);
+
+            _rigidbody.isKinematic = true;
+
+            _initialRotation = transform.localRotation;
         }
 
-        _grab.selectEntered.AddListener(OnGrab);
-        _grab.selectExited.AddListener(OnRelease);
-
-        _rigidbody.isKinematic = true;
-
-        _initialRotation = transform.localRotation;
-    }
-
-    void OnDestroy()
-    {
-        if (_grab != null)
+        void OnDestroy()
         {
-            _grab.selectEntered.RemoveListener(OnGrab);
-            _grab.selectExited.RemoveListener(OnRelease);
+            if (_grab != null)
+            {
+                _grab.selectEntered.RemoveListener(OnGrab);
+                _grab.selectExited.RemoveListener(OnRelease);
+            }
         }
-    }
 
-    void OnGrab(SelectEnterEventArgs args)
-    {
-        _handTransform = args.interactorObject.transform;
+        void OnGrab(SelectEnterEventArgs args)
+        {
+            _handTransform = args.interactorObject.transform;
+            _handStartAngle = GetHandAngle();
+            Debug.Log("Lever caught");
+        }
 
-        _handStartAngle = GetHandAngle();
+        void OnRelease(SelectExitEventArgs args)
+        {
+            _handTransform = null;
+            Debug.Log("Lever released");
+        }
 
-        Debug.Log("Dźwignia chwycona");
-    }
+        void Update()
+        {
+            if (_handTransform == null)
+                return;
 
-    void OnRelease(SelectExitEventArgs args)
-    {
-        _handTransform = null;
+            float currentHandAngle = GetHandAngle();
+            float deltaAngle = Mathf.DeltaAngle(_handStartAngle, currentHandAngle);
+            _leverAngle = Mathf.Clamp(deltaAngle, minAngle, maxAngle);
+            Debug.Log("Lever angle: " + _leverAngle);
+            transform.localRotation = _initialRotation * Quaternion.Euler(0f, 0f, _leverAngle);
+            Debug.Log("transform.localRotation: " + transform.localRotation);
+            bool pressedNow = _leverAngle >= 30f;
+            LeverPressStatus(pressedNow);
+        }
 
-        Debug.Log("Dźwignia puszczona");
-    }
+        private void LeverPressStatus(bool pressedNow)
+        {
+            if (pressedNow && !IsPressed)
+            {
+                IsPressed = true;
+                Debug.Log("LeverPressStatus: Lever pressed");
+                OnPressed?.Invoke();
+            }
+            else if (!pressedNow && IsPressed)
+            {
+                IsPressed = false;
+                Debug.Log("LeverPressStatus: Lever released");
+                OnReleased?.Invoke();
+            }
+        }
 
-    void Update()
-    {
-        if (_handTransform == null)
-            return;
-
-        float currentHandAngle = GetHandAngle();
-
-        float deltaAngle = Mathf.DeltaAngle(_handStartAngle, currentHandAngle);
-
-        _leverAngle = Mathf.Clamp(deltaAngle, minAngle, maxAngle);
-
-        transform.localRotation = _initialRotation * Quaternion.Euler(0f, 0f, _leverAngle);
-    }
-
-    private float GetHandAngle()
-    {
-        Vector3 direction = _handTransform.position - transform.position;
-
-        // Obrót wokół osi Z,
-        // dlatego ignorujemy wysokość.
-        direction.z = 0f;
-
-        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        private float GetHandAngle()
+        {
+            Vector3 direction = _handTransform.position - transform.position;
+            // rotation about the Z-axis
+            direction.z = 0f;
+            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        }
     }
 }

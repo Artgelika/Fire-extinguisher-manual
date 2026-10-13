@@ -1,25 +1,26 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class Bottle : MonoBehaviour
+namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    private XRGrabInteractable _grab;
-
-    void Start()
+    public class Bottle : MonoBehaviour 
     {
-        _grab = GetComponent<XRGrabInteractable>();
-        _grab.selectEntered.AddListener(OnGrab);
-        _grab.selectExited.AddListener(OnRelease);
-    }
+        [SerializeField]
+        private float _capacity = 50;
+        private float _currentAmount;
+        public bool IsEmpty => _currentAmount <= 0f;
+        
+        private void Awake()
+        {
+            _currentAmount = _capacity;
+        }
 
-    void OnGrab(SelectEnterEventArgs args)
-    {
-        // Optional: Add any logic needed when the bottle is grabbed
-    }
-
-    void OnRelease(SelectExitEventArgs args)
-    {
-        // Optional: Add any logic needed when the bottle is released
+        public void FuelConsumption(float amount)
+        {
+            _currentAmount = Mathf.Max(0, _currentAmount - amount);
+            if (_currentAmount <= 0)
+            {
+                Debug.Log("Bottle is empty.");
+            }
+        }
     }
 }
