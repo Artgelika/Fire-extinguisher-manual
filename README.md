@@ -5,6 +5,8 @@
 - Private project developed independently by me.
 
 ## Demo
+<img width="480" height="473" alt="gasnica" src="https://github.com/user-attachments/assets/1d8c0e47-ba5a-47e0-8fd8-2eb9db956cf7" />
+
 
 ## Technologies
 - Unity 3D
@@ -12,8 +14,10 @@
 - Github Actions
 
 ## Why is this valuable to the employer
-- Designing the entire flow from scratch.
+- Designing the system architecture and interaction flow from scratch.
 - Own design decisions and compromises.
+- Using state machines to manage complex interaction logic and control valid state transitions.
+- Designing component-based architecture with clearly separated responsibilities.
 
 ## Roadmap
 This project is developed in clearly defined stages, focusing on building a strong VR foundation first, followed by immersive features and finally production-ready architecture.
@@ -31,7 +35,7 @@ This project is developed in clearly defined stages, focusing on building a stro
 ---
 
 ### v0.2 – Core VR Interaction
-[![Status](https://img.shields.io/badge/status-In%20Progress-blue)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
+[![Status](https://img.shields.io/badge/status-Completed-brightgreen)](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
 
 **Goal:** Establish a stable and reliable base for the VR application.
 
@@ -39,7 +43,6 @@ This project is developed in clearly defined stages, focusing on building a stro
 - Basic controller/input handling
 - Minimal interaction mechanics
 - Simple scene rendering
-- Add E2E solution testing
 
 ➡️ View milestone: [v0.2 – Core VR Interaction](https://github.com/Artgelika/Fire-extinguisher-manual/milestone/2)
 
