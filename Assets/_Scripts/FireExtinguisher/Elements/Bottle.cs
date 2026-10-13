@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Assets._Scripts.FireExtinguisher.Elements
 {
-    public class Bottle : MonoBehaviour 
+    public class Bottle : MonoBehaviour
     {
         [SerializeField]
-        private float _capacity = 50;
+        private float _capacity = 1000;
         private float _currentAmount;
         public bool IsEmpty => _currentAmount <= 0f;
-        
+
         private void Awake()
         {
             _currentAmount = _capacity;

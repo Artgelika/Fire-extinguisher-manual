@@ -5,23 +5,12 @@ using UnityEngine;
 
 public class FireExtinguisher : MonoBehaviour
 {
-    [SerializeField]
-    private Lever _lever;
-
-    [SerializeField]
-    private CotterPin _cotterPin;
-
-    [SerializeField]
-    private Bottle _bottle;
-
-    [SerializeField]
-    private Hose _hose;
-
-    [SerializeField]
-    private SprayNozzle _sprayNozzle;
-
-    [SerializeField]
-    private float _consumptionRate = 1f; // Amount of liquid consumed per second
+    [SerializeField] private Lever _lever;
+    [SerializeField] private CotterPin _cotterPin;
+    [SerializeField] private Bottle _bottle;
+    [SerializeField] private Hose _hose;
+    [SerializeField] private SprayNozzle _sprayNozzle;
+    [SerializeField] private float _consumptionRate = 1f; // Amount of liquid consumed per second
 
     private FireExtinguisherStateController _fireExtinguisherStateController;
     private ISprayBehavior _sprayBehavior;
@@ -39,20 +28,8 @@ public class FireExtinguisher : MonoBehaviour
         }
         if (_sprayBehavior == null)
         {
-            Debug.LogError("No ISprayBehavior found on FireExtinguisher.", this);
+            Debug.LogError($"{nameof(FireExtinguisher)} requires an ISprayBehavior on the SprayNozzle (or as a component).", this);
             enabled = false;
-        }
-    }
-
-    private void Update()
-    {
-        if (_fireExtinguisherStateController.CurrentState == FireExtinguisherState.Discharging)
-        {
-            _bottle.FuelConsumption(_consumptionRate * Time.deltaTime);
-            if (_bottle.IsEmpty)
-            {
-                HandleEmptyBottle();
-            }
         }
     }
 
@@ -63,6 +40,7 @@ public class FireExtinguisher : MonoBehaviour
             HandlePinPulled();
             _cotterPin.OnPinPulled += HandlePinPulled;
         }
+
         if (_lever != null)
         {
             _lever.OnPressed += HandleLeverPressed;
@@ -76,11 +54,26 @@ public class FireExtinguisher : MonoBehaviour
         {
             _cotterPin.OnPinPulled -= HandlePinPulled;
         }
+
         if (_lever != null)
         {
             _lever.OnPressed -= HandleLeverPressed;
             _lever.OnReleased -= HandleLeverReleased;
         }
+    }
+
+    private void Update()
+    {
+        if (_fireExtinguisherStateController.CurrentState != FireExtinguisherState.Discharging)
+            return;
+
+        if (_bottle == null)
+            return;
+
+        _bottle.FuelConsumption(_consumptionRate * Time.deltaTime);
+
+        if (_bottle.IsEmpty)
+            HandleEmptyBottle();
     }
 
     private void HandlePinPulled()
