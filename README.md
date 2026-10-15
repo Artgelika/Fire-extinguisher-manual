@@ -78,3 +78,8 @@ This project is developed in clearly defined stages, focusing on building a stro
 
 
 # Who am I? - personal section
+I'm a Software Developer with 4 years of experience, passionate about problem-solving, clean architecture, and continuous learning.
+
+I currently work at Motorola Solutions in Kraków, where I develop software using C#. As an AI Leader in my department, I help introduce AI tools and educate my team on how to use them effectively.
+
+Beyond my day-to-day work, I'm exploring AI technologies, including LLMs and AI agents, with the goal of advancing into the field of AI engineering. I've also explored Virtual Reality development using Unity, which reflects my curiosity about new technologies and innovative solutions.
